@@ -2,3 +2,4 @@ main.py
 venv
 .idea
 db.sqlite3
+htmlcov
