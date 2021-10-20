@@ -17,6 +17,12 @@ class Category(models.Model):
         return self.name
 
 
+class ProductManager(models.Manager):
+
+    def get_queryset(self):
+        return super(ProductManager, self).get_queryset().filter(is_active=True)
+
+
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='product_creator')
@@ -30,6 +36,8 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = models.Manager()
+    products = ProductManager()
 
     class Meta:
         verbose_name_plural = 'Products'
