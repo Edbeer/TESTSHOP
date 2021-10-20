@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 from store.models import Product, Category
-from store.views import all_products
+from store.views import product_all
 
 
 @skip('demostration skip')
@@ -32,8 +32,11 @@ class TestViewResponse(TestCase):
     def test_url_allowed_hosts(self):
         """
         Test allowed hosts
+        :return:
         """
-        response = self.c.get('/')
+        response = self.c.get('/', HTTP_HOST='noadress.com')
+        self.assertEqual(response.status_code, 400)
+        response = self.c.get('/', HTTP_HOST='yourdomain.com')
         self.assertEqual(response.status_code, 200)
 
     def test_product_detail_url(self):
@@ -52,13 +55,13 @@ class TestViewResponse(TestCase):
 
     def test_home_page(self):
         request = HttpRequest()
-        response = all_products(request)
+        response = product_all(request)
         html = response.content.decode('utf-8')
         print(html)
         self.assertIn('<title>Home</title>', html)
         self.assertEqual(response.status_code, 200)
 
     def test_view_function(self):
-        request = self.factory.get('/item/django-beginner')
-        response = all_products(request)
+        request = self.factory.get('/django-beginner')
+        response = product_all(request)
         self.assertEqual(response.status_code, 200)
