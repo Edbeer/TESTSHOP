@@ -1,7 +1,9 @@
+from importlib import import_module
 from unittest import skip
 
+from django.conf import settings
 from django.http import HttpRequest
-from django.test import TestCase, Client, RequestFactory
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.urls import reverse
 
@@ -19,7 +21,6 @@ class TestViewResponse(TestCase):
 
     def setUp(self):
         self.c = Client()
-        self.factory = RequestFactory()
         User.objects.create(username='admin')
         Category.objects.create(name='django', slug='django')
         self.data1 = Product.objects.create(category_id=1,
@@ -55,13 +56,10 @@ class TestViewResponse(TestCase):
 
     def test_home_page(self):
         request = HttpRequest()
+        engine = import_module(settings.SESSION_ENGINE)
+        request.session = engine.SessionStore()
         response = product_all(request)
         html = response.content.decode('utf-8')
         print(html)
         self.assertIn('<title>Home</title>', html)
-        self.assertEqual(response.status_code, 200)
-
-    def test_view_function(self):
-        request = self.factory.get('/django-beginner')
-        response = product_all(request)
         self.assertEqual(response.status_code, 200)
