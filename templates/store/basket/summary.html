@@ -73,7 +73,9 @@
             },
             success: function (json) {
               console.log(prodid)
-              $('.product-item[data-index="'+ prodid +'"]').remove()
+              $('.product-item[data-index="'+ prodid +'"]').remove();
+              document.getElementById("subtotal").innerHTML = json.subtotal
+              document.getElementById("basket-qty").innerHTML = json.qty
             },
             error: function (xhr, errmsg, err) {}
         });
@@ -93,6 +95,8 @@
                 action: 'post'
             },
             success: function (json) {
+              document.getElementById("basket-qty").innerHTML = json.qty
+              document.getElementById("subtotal").innerHTML = json.subtotal
             },
             error: function (xhr, errmsg, err) {}
         });
