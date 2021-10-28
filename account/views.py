@@ -10,9 +10,6 @@ from .token import account_activation_token
 
 def account_register(request):
 
-    if request.user.is_authenticated():
-        return redirect('/')
-
     if request.method == 'POST':
         register_form = RegistrationForm(request.POST)
         if register_form.is_valid():
