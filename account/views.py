@@ -1,14 +1,22 @@
 from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.decorators import login_required
 
 from .forms import RegistrationForm
 from .models import UserBase
 from .token import account_activation_token
+
+
+@login_required
+def dashboard(request):
+    return render(request,
+                  'account/user/dashboard.html')
 
 
 def account_register(request):
@@ -31,6 +39,7 @@ def account_register(request):
                 'token': account_activation_token.make_token(user),
             })
             user.email_user(subject=subject, message=message)
+            return HttpResponse('success registration')
     else:
         register_form = RegistrationForm()
     return render(request, 'account/registration/register.html', {'form': register_form})
@@ -40,6 +49,8 @@ def account_activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = UserBase.objects.get(pk=uid)
+    except():
+        pass
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()

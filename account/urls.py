@@ -6,5 +6,7 @@ app_name = 'account'
 # b64 - type data - byte 64
 urlpatterns = [
     path('register/', account_register, name='register'),
-    path('activate/<slug:uidb64>/<slug:token>/', account_activate, name='activate')
+    path('activate/<slug:uidb64>/<slug:token>/', account_activate, name='activate'),
+    # User dashboard
+    path('dashboard/', dashboard, name='dashboard'),
 ]
