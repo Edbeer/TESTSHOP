@@ -1,3 +1,4 @@
+from django.contrib.auth import views as auth_views
 from django.urls import path
 from .views import *
 
@@ -5,6 +6,8 @@ app_name = 'account'
 # uid - user id
 # b64 - type data - byte 64
 urlpatterns = [
+    path('login/', auth_views.LoginView.as_view(template_name='account/registration/login.html',
+                                                form_class=UserLoginForm), name='login'),
     path('register/', account_register, name='register'),
     path('activate/<slug:uidb64>/<slug:token>/', account_activate, name='activate'),
     # User dashboard
