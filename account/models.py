@@ -55,7 +55,7 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     updated = models.DateTimeField(auto_now=True)
 
     objects = CustomAccountManager()
-
+    # Поменяй местами
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['user_name']
 

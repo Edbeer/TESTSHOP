@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -29,6 +29,17 @@ def edit_details(request):
         user_form = UserEditForm(instance=request.user)
     return render(request,
                   'account/user/edit_details.html', {'user_form': user_form})
+
+
+@login_required
+def delete_user(request):
+    # Поменяй потом эмейл на юзер
+    user = UserBase.objects.get(email=request.user)
+    print(user)
+    user.is_active = False
+    user.save()
+    logout(request)
+    return redirect('account:delete_confirmation')
 
 
 def account_register(request):
