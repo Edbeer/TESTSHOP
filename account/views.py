@@ -33,7 +33,7 @@ def edit_details(request):
 
 @login_required
 def delete_user(request):
-    # Поменяй потом эмейл на юзер
+    # Поменяй потом эмейл на юзер нейм
     user = UserBase.objects.get(email=request.user)
     print(user)
     user.is_active = False
