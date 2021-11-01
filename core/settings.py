@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'store.apps.StoreConfig',
     'basket.apps.BasketConfig',
-    'account.apps.AccountConfig'
+    'account.apps.AccountConfig',
+    'payment.apps.PaymentConfig',
 ]
 
 MIDDLEWARE = [
