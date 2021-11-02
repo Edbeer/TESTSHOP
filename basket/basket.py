@@ -1,5 +1,7 @@
 from decimal import Decimal
 
+from django.conf import settings
+
 from store.models import Product
 
 
@@ -77,6 +79,11 @@ class Basket():
         if product_id in self.basket:
             self.basket[product_id]['qty'] = qty
             self.save()
+
+    def clear(self):
+        # Remove basket from session
+        del self.session['skey']
+        self.save()
 
     def save(self):
         self.session.modified = True

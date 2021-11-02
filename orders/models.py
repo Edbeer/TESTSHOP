@@ -27,9 +27,11 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
+    # список продуктов в заказе
     order = models.ForeignKey(Order,
                               related_name='items',
                               on_delete=models.CASCADE)
+    # список заказов, в котором встречается продукт
     product = models.ForeignKey(Product,
                                 related_name='order_items',
                                 on_delete=models.CASCADE)
