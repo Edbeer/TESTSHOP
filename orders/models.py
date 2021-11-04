@@ -27,11 +27,11 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    # список продуктов в заказе
+    # список продуктов в заказе (unique - OrderItems)
     order = models.ForeignKey(Order,
                               related_name='items',
                               on_delete=models.CASCADE)
-    # список заказов, в котором встречается продукт
+    # колличество продукта (определенного OrderItem) в заказе
     product = models.ForeignKey(Product,
                                 related_name='order_items',
                                 on_delete=models.CASCADE)

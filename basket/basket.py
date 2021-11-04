@@ -15,13 +15,13 @@ class Basket():
         """
         Проверка, имеет ли пользвователь сессиию
         """
-        basket = self.session.get('skey')
-        if 'skey' not in request.session:
+        basket = self.session.get(settings.BASKET_SESSION_ID)
+        if settings.BASKET_SESSION_ID not in request.session:
             """
             Создание новой сессии для пользователя,
             который не имеет сессию (никогда не заходил на сайт)
             """
-            basket = self.session['skey'] = {}
+            basket = self.session[settings.BASKET_SESSION_ID] = {}
         self.basket = basket
 
     def add(self, product, qty):
@@ -59,7 +59,15 @@ class Basket():
             yield item
 
     def get_total_price(self):
-            return sum(Decimal(item['price']) * item['qty'] for item in self.basket.values())
+        subtotal = sum(Decimal(item['price']) * item['qty'] for item in self.basket.values())
+
+        if subtotal == 0:
+            shipping = Decimal(0.00)
+        else:
+            shipping = Decimal(11.50)
+
+        total = subtotal + Decimal(shipping)
+        return total
 
     def delete(self, product):
         """
@@ -82,7 +90,7 @@ class Basket():
 
     def clear(self):
         # Remove basket from session
-        del self.session['skey']
+        del self.session[settings.BASKET_SESSION_ID]
         self.save()
 
     def save(self):
