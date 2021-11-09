@@ -1,6 +1,4 @@
 from django.contrib.auth import login, logout
-from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
@@ -9,7 +7,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.decorators import login_required
 
 from .forms import RegistrationForm, UserEditForm
-from .models import Customer
+from .models import Customer, Address
 from .token import account_activation_token
 
 from orders.views import user_orders
@@ -85,3 +83,9 @@ def account_activate(request, uidb64, token):
     else:
         return render(request, 'account/registration/activation_invalid.html')
 
+
+# Addresses
+@login_required
+def view_address(request):
+    addresses = Address.objects.filter(customer=request.user)
+    return render(request, 'account/dashboard/addresses.html', {'addresses': addresses})
