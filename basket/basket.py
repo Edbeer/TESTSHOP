@@ -32,7 +32,7 @@ class Basket():
         if product_id in self.basket:
             self.basket[product_id]['qty'] = qty
         else:
-            self.basket[product_id] = {'price': str(product.price), 'qty': int(qty)}
+            self.basket[product_id] = {'price': str(product.regular_price), 'qty': int(qty)}
         self.save()
 
     def __len__(self):
@@ -47,7 +47,7 @@ class Basket():
         and return products
         """
         product_ids = self.basket.keys()
-        products = Product.products.filter(id__in=product_ids)
+        products = Product.objects.filter(id__in=product_ids)
         basket = self.basket.copy()
 
         for product in products:
