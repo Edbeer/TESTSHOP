@@ -22,12 +22,12 @@
         <div class="pe-3">Order</div>
         <div class="dropdown">
           <a class="text-reset text-decoration-none dropdown-toggle" href="#" role="link" id="dropdownLink"
-            data-bs-toggle="dropdown" aria-expanded="false">
+             data-bs-toggle="dropdown" aria-expanded="false">
             Shipping options
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
-              class="bi bi-chevron-down" viewBox="0 0 16 16">
+                 class="bi bi-chevron-down" viewBox="0 0 16 16">
               <path fill-rule="evenodd"
-                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
             </svg>
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownLink">
@@ -42,7 +42,7 @@
         </div>
         <div id="">Shipping <span class="small">(Next day delivery)</span>: <span class="fw-bold">£11.50</span></div>
         <div class="pt-2">Total to pay: <span class="fw-bold h5">£</span><span id="total"
-            class="fw-bold h5">{{basket.get_total_price}}</span></div>
+                                                                               class="fw-bold h5">{{basket.get_total_price}}</span></div>
       </div>
     </div>
     <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
@@ -57,7 +57,12 @@
       <div class="card mb-3 border-0 product-item" data-index="{{product.id}}">
         <div class="row g-0">
           <div class="col-md-2 d-none d-md-block">
-            <img class="img-fluid mx-auto d-block" alt="Responsive image" src="{{ product.image.url }}" />
+            {% for image in product.product_image.all %}
+            {% if image.is_feature %}
+            <img class="img-fluid" alt="Responsive image" src="{{ image.image.url }}"
+                 alt="{{ image.alt_text }}">
+            {% endif %}
+            {% endfor %}
           </div>
           <div class="col-md-10 ps-md-3">
             <div class="card-body p-1">
@@ -73,9 +78,9 @@
                 <option value="">4</option>
               </select>
               <a type="button" id="update-button" data-index="{{product.id}}"
-                class="update-button text-decoration-none small ps-3">Update</a>
+                 class="update-button text-decoration-none small ps-3">Update</a>
               <a type="button" id="delete-button" data-index="{{product.id}}"
-                class="delete-button text-decoration-none small">Delete</a>
+                 class="delete-button text-decoration-none small">Delete</a>
             </div>
           </div>
         </div>
