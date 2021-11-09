@@ -9,7 +9,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.decorators import login_required
 
 from .forms import RegistrationForm, UserEditForm
-from .models import UserBase
+from .models import Customer
 from .token import account_activation_token
 
 from orders.views import user_orders
@@ -37,7 +37,7 @@ def edit_details(request):
 @login_required
 def delete_user(request):
     # Поменяй потом эмейл на юзер нейм
-    user = UserBase.objects.get(email=request.user)
+    user = Customer.objects.get(email=request.user)
     print(user)
     user.is_active = False
     user.save()
@@ -74,7 +74,7 @@ def account_register(request):
 def account_activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
-        user = UserBase.objects.get(pk=uid)
+        user = Customer.objects.get(pk=uid)
     except():
         pass
     if user is not None and account_activation_token.check_token(user, token):
