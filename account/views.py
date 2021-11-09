@@ -125,3 +125,10 @@ def edit_address(request, id):
 def delete_address(request, id):
     address = Address.objects.filter(pk=id, customer=request.user).delete()
     return redirect("account:addresses")
+
+
+@login_required
+def set_default(request, id):
+    Address.objects.filter(customer=request.user, default=True).update(default=False)
+    Address.objects.filter(pk=id, customer=request.user).update(default=True)
+    return redirect("account:addresses")
