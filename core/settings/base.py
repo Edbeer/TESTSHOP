@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'orders.apps.OrdersConfig',
     'mptt',
+    'checkout.apps.CheckoutConfig',
 ]
 
 MIDDLEWARE = [
