@@ -1,6 +1,7 @@
+from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.encoding import force_bytes, force_text
@@ -8,11 +9,31 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.decorators import login_required
 
+from store.models import Product
 from .forms import RegistrationForm, UserEditForm, UserAddressForm
 from .models import Customer, Address
 from .token import account_activation_token
 
 from orders.views import user_orders
+
+
+@login_required
+def wishlist(request):
+    products = Product.objects.filter(users_wishlist=request.user)
+    return render(request,
+                  'account/dashboard/user_wish_list.html', {'wishlist': products})
+
+
+@login_required
+def add_to_wishlist(request, id):
+    product = get_object_or_404(Product, id=id)
+    if product.users_wishlist.filter(id=request.user.id).exists():
+        product.users_wishlist.remove(request.user)
+        messages.success(request, 'Removed ' + product.title + ' from your Wishlist')
+    else:
+        product.users_wishlist.add(request.user)
+        messages.success(request, 'Added ' + product.title + ' to your Wishlist')
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])   
 
 
 @login_required
