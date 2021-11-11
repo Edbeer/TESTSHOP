@@ -40,7 +40,7 @@
       <div class="d-flex bd-highlight">
         <div class="p-2 flex-grow-1 bd-highlight">Total:</div>
         <div class="p-2 bd-highlight"><span class="fw-bold h5">£</span><span id="total"
-            class="fw-bold h5">{{basket.get_total_price}}</span></div>
+            class="fw-bold h5">{{ basket.get_total_price }}</span></div>
       </div>
       <a role="button" href="" class="btn btn-success fw-bold w-100"
         type="button">Pay Securely</a>
@@ -74,7 +74,26 @@
   </div>
 </div>
 
+<script>
+  $('input[type=radio][name=deliveryOption]').on('change', function(e) {
+    e.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: '{% url "checkout:basket_update_delivery" %}',
+      data: {
+        deliveryoption: $(this).val(),
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: "post",
+      },
+      success: function (json) {
+        document.getElementById("total").innerHTML = json.total;
+        document.getElementById("delivery_price").innerHTML = json.delivery_price;
+      },
+      error: function (xhr, errmsg, err) {},
+    });
 
+  });
+</script>
 
 
 {% endblock %}
